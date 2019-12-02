@@ -165,12 +165,14 @@ async function createCommentOnCommit () {
 }
 
 async function createCommentOnPullRequest () {
+  core.info("Creating comment on PR")
 
   const {
     data: comments,
   } = await octokit.issues.listComments({
     ...context.repo, issue_number: context.issue.number,
   })
+  core.info("Comments from GH", comments)
   console.log(comments)
 
   const zeitPreviewURLComment = comments.find(
@@ -188,6 +190,7 @@ async function createCommentOnPullRequest () {
       'meta-githubCommitSha': context.sha,
     },
   })
+  core.info("Commit deployment", commitDeployment)
 
   if (commitDeployment) {
     deploymentUrl = commitDeployment.url
@@ -203,6 +206,8 @@ async function createCommentOnPullRequest () {
       },
     })
 
+    core.info("Last branch deployed", lastBranchDeployment)
+
     if (lastBranchDeployment) {
       deploymentUrl = lastBranchDeployment.url
       deploymentCommit = lastBranchDeployment.meta.commit
@@ -216,6 +221,7 @@ async function createCommentOnPullRequest () {
           limit: 1,
         },
       })
+      core.info("Last deployment", lastDeployment)
 
       if (lastDeployment) {
         deploymentUrl = lastDeployment.url
@@ -232,6 +238,9 @@ async function createCommentOnPullRequest () {
     https://${deploymentUrl}
   `
 
+  core.info("Comment body", commentBody)
+  core.info("Should update?", !!zeitPreviewURLComment)
+
   if (zeitPreviewURLComment) {
     await octokit.issues.updateComment({
       ...context.repo, comment_id: zeitPreviewURLComment.id, body: commentBody,
@@ -241,6 +250,8 @@ async function createCommentOnPullRequest () {
       ...context.repo, issue_number: context.issue.number, body: commentBody,
     })
   }
+
+  core.info("Done adding comment")
 
   core.setOutput('preview-url', `https://${deploymentUrl}`)
 }
