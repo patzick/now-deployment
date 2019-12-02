@@ -187,6 +187,7 @@ async function createCommentOnPullRequest () {
     },
   } = await zeitAPIClient.get('/v4/now/deployments', {
     params: {
+      "teamId": zeitTeamId,
       'meta-githubCommitSha': context.sha,
     },
   })
@@ -202,6 +203,7 @@ async function createCommentOnPullRequest () {
       },
     } = await zeitAPIClient.get('/v4/now/deployments', {
       params: {
+        "teamId": zeitTeamId,
         'meta-githubCommitRef': context.ref,
       },
     })
@@ -218,6 +220,7 @@ async function createCommentOnPullRequest () {
         },
       } = await zeitAPIClient.get('/v4/now/deployments', {
         params: {
+          "teamId": zeitTeamId,
           limit: 1,
         },
       })
