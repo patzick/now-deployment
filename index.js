@@ -54,7 +54,7 @@ async function nowDeploy () {
     `now ${nowArgs}`.trim(),
     '-t',
     zeitToken,
-    '--team',
+    '--scope',
     zeitTeamId,
     '-m',
     `githubCommitSha=${context.sha}`,
