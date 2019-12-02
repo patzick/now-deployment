@@ -246,6 +246,7 @@ async function createCommentOnPullRequest () {
 }
 
 run().catch(error => {
+  console.error(error)
   core.setFailed(error.message)
 })
 
