@@ -37,6 +37,8 @@ async function run () {
 async function nowDeploy () {
   const commit = execSync('git log -1 --pretty=format:%B').toString().trim()
 
+  core.info('--> Zeit token is set: ' + !!zeitToken)
+
   let myOutput = ''
   let myError = ''
   const options = {}
@@ -52,7 +54,7 @@ async function nowDeploy () {
 
   return await exec.exec('npx', [
     `now ${nowArgs}`.trim(),
-    '-t',
+    '--token',
     zeitToken,
     '--scope',
     zeitTeamId,
