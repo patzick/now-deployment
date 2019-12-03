@@ -53,7 +53,8 @@ async function nowDeploy () {
   }
 
   return await exec.exec('npx', [
-    `now ${nowArgs}`.trim(),
+    'now',
+    ...(nowArgs.split(/ +/)),
     '--token',
     zeitToken,
     '--scope',
@@ -114,7 +115,7 @@ async function createCommentOnCommit () {
 
   if (commitDeployment) {
     deploymentUrl = commitDeployment.url
-    deploymentCommit = commitDeployment.meta.commit
+    deploymentCommit = commitDeployment.meta.githubCommitSha
   } else {
     const {
       data: {
@@ -128,7 +129,7 @@ async function createCommentOnCommit () {
 
     if (lastBranchDeployment) {
       deploymentUrl = lastBranchDeployment.url
-      deploymentCommit = lastBranchDeployment.meta.commit
+      deploymentCommit = lastBranchDeployment.meta.githubCommitSha
     } else {
       const {
         data: {
@@ -142,7 +143,7 @@ async function createCommentOnCommit () {
 
       if (lastDeployment) {
         deploymentUrl = lastDeployment.url
-        deploymentCommit = lastDeployment.meta.commit
+        deploymentCommit = lastDeployment.meta.githubCommitSha
       }
     }
   }
@@ -199,7 +200,7 @@ async function createCommentOnPullRequest () {
 
   if (commitDeployment) {
     deploymentUrl = commitDeployment.url
-    deploymentCommit = commitDeployment.meta.commit
+    deploymentCommit = commitDeployment.meta.githubCommitSha
   } else {
     const {
       data: {
@@ -216,7 +217,7 @@ async function createCommentOnPullRequest () {
 
     if (lastBranchDeployment) {
       deploymentUrl = lastBranchDeployment.url
-      deploymentCommit = lastBranchDeployment.meta.commit
+      deploymentCommit = lastBranchDeployment.meta.githubCommitSha
     } else {
       const {
         data: {
@@ -232,7 +233,7 @@ async function createCommentOnPullRequest () {
 
       if (lastDeployment) {
         deploymentUrl = lastDeployment.url
-        deploymentCommit = lastDeployment.meta.commit
+        deploymentCommit = lastDeployment.meta.githubCommitSha
       }
     }
   }
